@@ -1,10 +1,9 @@
 package com.servidor.Practica4.Controllers;
 
-import com.servidor.Practica4.Builders.UserBuilder;
 import com.servidor.Practica4.Forms.SignUpForm;
-import com.servidor.Practica4.Models.User;
 import com.servidor.Practica4.Services.TokenService;
 import com.servidor.Practica4.Services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,23 +15,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class userController {
+public class UserController {
     UserService userService;
     TokenService tokenService;
-    UserBuilder userBuilder = new UserBuilder();
 
-    public userController(UserService userService, TokenService tokenService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
         this.tokenService = tokenService;
     }
 
     @CrossOrigin
     @PostMapping("/register")
-    public Map<String, String> SignUp(@RequestBody SignUpForm signUpForm, HttpServletResponse response) throws NoSuchAlgorithmException {
-        Map<String, String> result = new HashMap<>();
+    public Map<String, Object> SignUp(@RequestBody SignUpForm signUpForm, HttpServletResponse response) throws NoSuchAlgorithmException {
+        Map<String, Object> result = new HashMap<>();
 
-        User user = userBuilder.createUserFromForm(signUpForm);
-        String message = userService.createUser(user);
+        String message = userService.createUser(signUpForm);
 
         if (!message.equals("done")) response.setStatus(400);
 
@@ -51,7 +48,7 @@ public class userController {
 
         if (!message.equals("done")) response.setStatus(400);
         else {
-            Map<String, Object> userMap = userBuilder.createJson(userService.getUserByEmail(email));
+            Map<String, Object> userMap = userService.getUserJson(email);
             String token = tokenService.newToken(email);
 
             result.put("token", token);
@@ -61,4 +58,11 @@ public class userController {
         return result;
     }
 
+    @CrossOrigin
+    @PostMapping("/getprofile")
+    public Map<String, Object> getProfile(HttpServletRequest request){
+        Map<String, Object> result = new HashMap<>();
+        //Coger token, recuperar usuario con el token y devolverlo igual que cuando haces login.
+        return result;
+    }
 }

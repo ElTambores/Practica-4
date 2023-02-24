@@ -1,5 +1,7 @@
 package com.servidor.Practica4.Services;
 
+import com.servidor.Practica4.Builders.UserBuilder;
+import com.servidor.Practica4.Forms.SignUpForm;
 import com.servidor.Practica4.Models.User;
 import com.servidor.Practica4.Repos.UserRepo;
 import com.servidor.Practica4.Utils.HashUtils;
@@ -7,16 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
     UserRepo userRepo;
+    UserBuilder userBuilder = new UserBuilder();
 
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
-    public String createUser(User user) {
+    public String createUser(SignUpForm signUpForm) throws NoSuchAlgorithmException {
+        User user = userBuilder.fromForm(signUpForm);
         List<User> users = userRepo.findByEmailEquals(user.getEmail());
         if (users.size() == 0) {
             userRepo.save(user);
@@ -41,5 +46,9 @@ public class UserService {
     public User getUserByEmail(String email) {
         List<User> users = userRepo.findByEmailEquals(email);
         return users.size() == 0 ? null : users.get(0);
+    }
+
+    public Map<String, Object> getUserJson(String email) {
+        return userBuilder.generateJson(getUserByEmail(email));
     }
 }

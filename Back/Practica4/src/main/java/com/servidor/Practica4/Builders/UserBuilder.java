@@ -11,7 +11,7 @@ import java.util.Map;
 public class UserBuilder {
     HashUtils hashUtils = new HashUtils();
 
-    public User createUserFromForm(SignUpForm signUpForm) throws NoSuchAlgorithmException {
+    public User fromForm(SignUpForm signUpForm) throws NoSuchAlgorithmException {
         User user = new User();
         user.setEmail(signUpForm.getEmail());
         user.setName(signUpForm.getName());
@@ -20,7 +20,7 @@ public class UserBuilder {
         return user;
     }
 
-    public Map<String, Object> createJson(User user) {
+    public Map<String, Object> generateJson(User user) {
         Map<String, Object> userInfo = getUserInfo(user);
         userInfo.put("permissions", getRootByRole(user.getRole()));
 
