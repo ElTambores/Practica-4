@@ -1,4 +1,4 @@
-package com.example.autentificacionSegundaExplicacion.service;
+package com.servidor.Practica4.Services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
