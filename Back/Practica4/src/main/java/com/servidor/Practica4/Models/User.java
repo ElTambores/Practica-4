@@ -2,6 +2,8 @@ package com.servidor.Practica4.Models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class User {
     @Id
@@ -19,6 +21,7 @@ public class User {
     String avatarUrl;
 
     String __v;
+
 
     public Long getId() {
         return id;
@@ -75,4 +78,5 @@ public class User {
     public void set__v(String __v) {
         this.__v = __v;
     }
+
 }

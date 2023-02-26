@@ -3,6 +3,7 @@ package com.servidor.Practica4.Forms;
 public class TopicForm {
     String title;
     String content;
+    String category;
 
     public String getTitle() {
         return title;
@@ -18,5 +19,13 @@ public class TopicForm {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

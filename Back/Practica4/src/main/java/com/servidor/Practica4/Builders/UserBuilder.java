@@ -40,6 +40,7 @@ public class UserBuilder {
         userInfo.put("avatarUrl", "");
         userInfo.put("id", user.getId());
         userInfo.put("role", user.getRole());
+        userInfo.put("__v", user.get__v());
 
         return userInfo;
     }
@@ -62,9 +63,27 @@ public class UserBuilder {
         user.setId(Long.parseLong(tokenInfo.get("_id").toString()));
         user.setEmail(email.substring(1, email.length() - 1));
         user.setName(name.substring(1, name.length() - 1));
-        user.set__v(tokenInfo.get("__v").toString());
+        user.set__v("0");
         user.setAvatarUrl(avatarUrl);
 
         return generateJson(user);
+    }
+
+    public User fromUserInfo(Map<String, Object> tokenInfo) {
+        User user = new User();
+        String role = (tokenInfo.get("role")).toString();
+        String email = tokenInfo.get("email").toString();
+        String name = tokenInfo.get("name").toString();
+        String avatarUrl = tokenInfo.get("avatarUrl").toString();
+        String __v = tokenInfo.get("__v").toString();
+
+        user.setRole(role);
+        user.setId(Long.parseLong(tokenInfo.get("_id").toString()));
+        user.setEmail(email);
+        user.setName(name);
+        user.set__v(__v);
+        user.setAvatarUrl(avatarUrl);
+
+        return user;
     }
 }
