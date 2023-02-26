@@ -22,9 +22,7 @@ public class CategoryBuilder {
 
     private String getRandomColor() {
         Random random = new Random();
-        int r = (int) (random.nextFloat()*256);
-        int g = (int) (random.nextFloat()*256);
-        int b = (int) (random.nextFloat()*256);
-        return "";
+        int tone = (int) (random.nextFloat() * 256);
+        return "hsl(" + tone + ", 50%, 50%)";
     }
 }

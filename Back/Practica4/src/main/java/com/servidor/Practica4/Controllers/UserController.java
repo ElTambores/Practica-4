@@ -5,10 +5,7 @@ import com.servidor.Practica4.Services.TokenService;
 import com.servidor.Practica4.Services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -49,7 +46,7 @@ public class UserController {
         if (!message.equals("done")) response.setStatus(400);
         else {
             Map<String, Object> userMap = userService.getUserJson(email);
-            String token = tokenService.newToken(email);
+            String token = tokenService.createUserToken(email);
 
             result.put("token", token);
             result.put("user", userMap);
@@ -59,10 +56,9 @@ public class UserController {
     }
 
     @CrossOrigin
-    @PostMapping("/getprofile")
-    public Map<String, Object> getProfile(HttpServletRequest request){
-        Map<String, Object> result = new HashMap<>();
-        //Coger token, recuperar usuario con el token y devolverlo igual que cuando haces login.
-        return result;
+    @GetMapping("/getprofile")
+    public Object getProfile(HttpServletRequest request) {
+        return request.getAttribute("user");
+
     }
 }

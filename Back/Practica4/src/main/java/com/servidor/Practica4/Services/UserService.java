@@ -30,10 +30,6 @@ public class UserService {
         return "This email is already registered";
     }
 
-    public List<User> getUsers() {
-        return userRepo.findAll();
-    }
-
     public String login(String email, String password) throws NoSuchAlgorithmException {
         List<User> users = userRepo.findByEmailEquals(email);
         HashUtils hashUtils = new HashUtils();

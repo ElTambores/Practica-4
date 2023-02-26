@@ -30,4 +30,10 @@ public class CategoryController {
         return categoryService.createCategory(categoryForm);
     }
 
+    @CrossOrigin
+    @GetMapping("categories/{slug}")
+    public Category getCategory(@PathVariable String slug, HttpServletResponse response) throws NoSuchAlgorithmException {
+        return categoryService.getAllCategory(slug);
+    }
+
 }

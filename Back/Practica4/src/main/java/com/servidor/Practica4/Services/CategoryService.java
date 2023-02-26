@@ -29,18 +29,22 @@ public class CategoryService {
 
     private String generateSlug(String title) {
         List<Category> categories = getAllCategories();
-        String slut = title + categories.size();
-        while (DuplicatedSlut(categories, slut)) {
+        while (DuplicatedSlut(categories, title)) {
             Random random = new Random();
-            slut+=random.nextInt(100);
+            title += random.nextInt(100);
         }
-        return slut;
+        return title;
     }
 
-    private boolean DuplicatedSlut(List<Category> categories, String slut) {
+    private boolean DuplicatedSlut(List<Category> categories, String slug) {
         for (Category category : categories) {
-            if (category.getSlug().equals(slut)) return true;
+            if (category.getSlug().equals(slug)) return true;
         }
         return false;
+    }
+
+    public Category getAllCategory(String slug) {
+        List<Category> categories = categoryRepo.findBySlugEquals(slug);
+        return categories.size() == 0 ? null : categories.get(0);
     }
 }

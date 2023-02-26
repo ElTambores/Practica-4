@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
     TokenService tokenService;
@@ -18,16 +19,16 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (request.getMethod().equals("OPTIONS")) return true;
 
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         try {
             String token = authHeader.replace("Bearer ", "");
-            request.setAttribute("userName", tokenService.getUserFromToken(token));
+            request.setAttribute("user", tokenService.getUserFromToken(token));
             return true;
-        }catch (SignatureVerificationException signatureVerificationException){
+        } catch (SignatureVerificationException signatureVerificationException) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }

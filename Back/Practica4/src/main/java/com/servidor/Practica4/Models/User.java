@@ -16,6 +16,10 @@ public class User {
 
     String role;
 
+    String avatarUrl;
+
+    String __v;
+
     public Long getId() {
         return id;
     }
@@ -56,4 +60,19 @@ public class User {
         this.role = role;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String get__v() {
+        return __v;
+    }
+
+    public void set__v(String __v) {
+        this.__v = __v;
+    }
 }

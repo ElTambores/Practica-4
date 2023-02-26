@@ -1,11 +1,8 @@
 package com.servidor.Practica4.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -15,20 +12,20 @@ public class Category {
 
     String title;
 
-    //slug es el titulo pero en minusculas y sustituir espacios por _
-    //tiene que ser único (el titulo no). Si ya existe uno meter número random al final hasta que no lo sea.
     String slug;
 
-    //Siempre 0 por ahora
     int __v;
 
-    //Ejemplo color "hsl(11, 50%, 50%)"
     String color;
 
     String description;
 
     //A futuro debería ser una lista de usuarios resultando en una tabla pivote (ver ejemplo en portatil)
     String moderators;
+
+    @OneToMany(mappedBy = "category")
+    Set<Topic> topics;
+
 
     public Long get_id() {
         return _id;
@@ -84,5 +81,13 @@ public class Category {
 
     public void setModerators(String moderators) {
         this.moderators = moderators;
+    }
+
+    public Set<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
     }
 }
