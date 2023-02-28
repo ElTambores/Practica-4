@@ -23,10 +23,6 @@ public class Category {
     //A futuro debería ser una lista de usuarios resultando en una tabla pivote (ver ejemplo en portatil)
     String moderators;
 
-    @OneToMany(mappedBy = "category")
-    Set<Topic> topics;
-
-
     public Long get_id() {
         return _id;
     }
@@ -83,11 +79,4 @@ public class Category {
         this.moderators = moderators;
     }
 
-    public Set<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(Set<Topic> topics) {
-        this.topics = topics;
-    }
 }

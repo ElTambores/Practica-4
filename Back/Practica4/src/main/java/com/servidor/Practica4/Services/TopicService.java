@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class TopicService {
@@ -26,16 +27,16 @@ public class TopicService {
 
     public List<Topic> getAllTopics(String slug) {
         Category category = getCategoryFromSlug(slug);
-        assert category != null;
-        long categoryId = category.get_id();
-        return topicRepo.findByIdEquals(categoryId);
+        return topicRepo.findByCategoryEquals(category);
     }
 
     public Topic createTopic(TopicForm topicForm, Object userInfo) {
         User user = extractUserFromUserInfo(userInfo);
         Category topicCategory = getCategoryFromSlug(topicForm.getCategory());
 
-        return topicRepo.save(topicBuilder.fromForm(topicForm, topicCategory, user));
+        Topic topic = topicRepo.save(topicBuilder.fromForm(topicForm, topicCategory, user));
+
+        return topic;
     }
 
     private User extractUserFromUserInfo(Object userInfo) {
@@ -50,7 +51,9 @@ public class TopicService {
         return categories.get(0);
     }
 
-    public List<Topic> getTopicReplies(int topicId) {
-        return null;
+    public Topic getTopic(Long topicId, Object userInfo) {
+        User user = extractUserFromUserInfo(userInfo);
+        Optional<Topic> topic = topicRepo.findById(topicId);
+        return topic.orElse(null);
     }
 }

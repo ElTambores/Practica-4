@@ -2,14 +2,12 @@ package com.servidor.Practica4.Controllers;
 
 import com.servidor.Practica4.Forms.TopicForm;
 import com.servidor.Practica4.Models.Topic;
-import com.servidor.Practica4.Models.User;
 import com.servidor.Practica4.Services.TopicService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class TopicController {
@@ -28,12 +26,13 @@ public class TopicController {
     @CrossOrigin
     @PostMapping("/topics")
     public Topic createTopic(@RequestBody TopicForm topicForm, HttpServletRequest request) {
-        return topicService.createTopic(topicForm, request.getAttribute("user"));
+        Topic topic = topicService.createTopic(topicForm, request.getAttribute("user"));
+        return topic;
     }
 
     @CrossOrigin
     @GetMapping("/topics/{topicId}")
-    public List<Topic> getTopics(@PathVariable int topicId) {
-        return topicService.getTopicReplies(topicId);
+    public Topic getTopic(@PathVariable long topicId, HttpServletRequest request) {
+        return topicService.getTopic(topicId, request.getAttribute("user"));
     }
 }

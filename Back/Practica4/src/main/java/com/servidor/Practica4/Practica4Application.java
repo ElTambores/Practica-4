@@ -20,6 +20,6 @@ public class Practica4Application  implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(tokenInterceptor)
 				.addPathPatterns("/getprofile")
-				.addPathPatterns(("/topics"));
+				.addPathPatterns(("/topics/**"));
 	}
 }

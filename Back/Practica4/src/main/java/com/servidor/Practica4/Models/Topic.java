@@ -8,7 +8,7 @@ import java.util.Date;
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long _id;
 
     String title;
 
@@ -22,22 +22,22 @@ public class Topic {
 
     int __V;
 
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "user")
     User user;
 
     //Set<Reply> replies; añadir cuando se implementen las replies
 
     @ManyToOne
-    @JoinColumn(name = "_id")
+    @JoinColumn(name = "category")
     Category category;
 
-    public Long getId() {
-        return id;
+    public Long get_id() {
+        return _id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void set_id(Long _id) {
+        this._id = _id;
     }
 
     public String getTitle() {
