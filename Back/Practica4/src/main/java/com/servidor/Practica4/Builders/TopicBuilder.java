@@ -6,6 +6,8 @@ import com.servidor.Practica4.Models.Topic;
 import com.servidor.Practica4.Models.User;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TopicBuilder {
     public Topic fromForm(TopicForm topicForm, Category topicCategory, User user) {
@@ -22,5 +24,24 @@ public class TopicBuilder {
         topic.setViews(0);
 
         return topic;
+    }
+
+    public Map<String, Object> getJson(Topic topic, User user) {
+        Map<String, Object> json = new HashMap<>();
+
+        json.put("category", topic.getCategory());
+        json.put("content", topic.getContent());
+        json.put("createdAt", topic.getCreatedAt());
+        json.put("title", topic.getTitle());
+        json.put("updatedAt", topic.getUpdatedAt());
+        json.put("user", user);
+        json.put("views", topic.getViews());
+        json.put("__v", topic.get__V());
+        json.put("_id", topic.get_id());
+
+        //TODO arreglar recursividad de replies.
+        json.put("replies", topic.getReplies());
+
+        return json;
     }
 }

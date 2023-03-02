@@ -26,7 +26,8 @@ public class UserBuilder {
 
     public Map<String, Object> generateJson(User user) {
         Map<String, Object> userInfo = getUserInfo(user);
-        userInfo.put("permissions", getRootByRole(user.getRole()));
+        Map<String, Object> permissions = getPermissions(user.getRole());
+        userInfo.put("permissions", permissions);
 
         return userInfo;
     }
@@ -45,10 +46,12 @@ public class UserBuilder {
         return userInfo;
     }
 
-    public Map<String, Object> getRootByRole(String role) {
+    public Map<String, Object> getPermissions(String role) {
         Map<String, Object> root = new HashMap<>();
         PermissionsUtils permissionsUtils = new PermissionsUtils();
         root.put("root", permissionsUtils.getPermissionsByRole(role));
+        String[] categories = new String[0];
+        root.put("categories", categories);
         return root;
     }
 

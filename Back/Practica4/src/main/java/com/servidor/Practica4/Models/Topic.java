@@ -3,6 +3,7 @@ package com.servidor.Practica4.Models;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Topic {
@@ -21,6 +22,9 @@ public class Topic {
     int views;
 
     int __V;
+
+    @OneToMany(mappedBy = "topic")
+    Set<Reply> replies;
 
     @ManyToOne
     @JoinColumn(name = "user")
@@ -94,6 +98,14 @@ public class Topic {
 
     public void set__V(int __V) {
         this.__V = __V;
+    }
+
+    public Set<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(Set<Reply> replies) {
+        this.replies = replies;
     }
 
     public User getUser() {

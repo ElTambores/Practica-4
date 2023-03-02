@@ -44,7 +44,7 @@ public class UserService {
         return users.size() == 0 ? null : users.get(0);
     }
 
-    public Map<String, Object> getUserJson(String email) {
+    public Map<String, Object> getUserJson1(String email) {
         return userBuilder.generateJson(getUserByEmail(email));
     }
 }

@@ -1,5 +1,6 @@
 package com.servidor.Practica4.Controllers;
 
+import com.servidor.Practica4.Forms.ReplyForm;
 import com.servidor.Practica4.Forms.TopicForm;
 import com.servidor.Practica4.Models.Topic;
 import com.servidor.Practica4.Services.TopicService;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class TopicController {
@@ -32,7 +34,13 @@ public class TopicController {
 
     @CrossOrigin
     @GetMapping("/topics/{topicId}")
-    public Topic getTopic(@PathVariable long topicId, HttpServletRequest request) {
+    public Map<String, Object> getTopic(@PathVariable long topicId, HttpServletRequest request) {
         return topicService.getTopic(topicId, request.getAttribute("user"));
+    }
+
+    @CrossOrigin
+    @PostMapping("/topics/{topicId}/replies")
+    public Map<String, Object> postTopicReply(@RequestBody ReplyForm replyForm, @PathVariable long topicId, HttpServletRequest request) {
+        return topicService.postReply(replyForm, topicId, request.getAttribute("user"));
     }
 }

@@ -45,7 +45,7 @@ public class UserController {
 
         if (!message.equals("done")) response.setStatus(400);
         else {
-            Map<String, Object> userMap = userService.getUserJson(email);
+            Map<String, Object> userMap = userService.getUserJson1(email);
             String token = tokenService.createUserToken(email);
 
             result.put("token", token);

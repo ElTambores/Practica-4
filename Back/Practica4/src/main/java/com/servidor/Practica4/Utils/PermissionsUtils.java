@@ -12,11 +12,7 @@ public class PermissionsUtils {
                     "own_replies:delete",
                     "categories:write",
                     "categories:delete");
-            case "user" -> Arrays.asList(
-                    "own_topics:write",
-                    "own_topics:delete"
-            );
-            case "moderator" -> Arrays.asList(
+            case "user", "moderator" -> Arrays.asList(
                     "own_topics:write",
                     "own_topics:delete",
                     "own_replies:write",
