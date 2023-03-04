@@ -38,9 +38,4 @@ public class TopicController {
         return topicService.getTopic(topicId);
     }
 
-    @CrossOrigin
-    @PostMapping("/topics/{topicId}/replies")
-    public Map<String, Object> postTopicReply(@RequestBody ReplyForm replyForm, @PathVariable long topicId, HttpServletRequest request) {
-        return topicService.postReply(replyForm, topicId, request.getAttribute("user"));
-    }
 }

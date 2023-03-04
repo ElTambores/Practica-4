@@ -1,2 +1,4 @@
-package com.servidor.Practica4.Exceptions;public class SamePasswordException {
+package com.servidor.Practica4.Exceptions;
+
+public class SamePasswordException extends RuntimeException{
 }

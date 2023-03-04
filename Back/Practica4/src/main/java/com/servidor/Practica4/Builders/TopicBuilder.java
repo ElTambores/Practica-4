@@ -10,6 +10,7 @@ import java.util.*;
 
 public class TopicBuilder {
     UserBuilder userBuilder = new UserBuilder();
+    ReplyBuilder replyBuilder = new ReplyBuilder();
 
     public Topic fromForm(TopicForm topicForm, Category topicCategory, User user) {
         Topic topic = new Topic();
@@ -25,23 +26,6 @@ public class TopicBuilder {
         topic.setViews(0);
 
         return topic;
-    }
-
-    public Map<String, Object> getJson(Topic topic, User user, List<Reply> replies) {
-        Map<String, Object> json = new HashMap<>();
-
-        json.put("category", topic.getCategory());
-        json.put("content", topic.getContent());
-        json.put("createdAt", topic.getCreatedAt());
-        json.put("title", topic.getTitle());
-        json.put("updatedAt", topic.getUpdatedAt());
-        json.put("user", userBuilder.generateJsonFullInfo(user));
-        json.put("views", topic.getViews());
-        json.put("__v", topic.get__V());
-        json.put("_id", topic.get_id());
-        json.put("replies", replies);
-
-        return json;
     }
 
 
@@ -81,7 +65,7 @@ public class TopicBuilder {
         topicJson.put("id", topic.get_id());
         topicJson.put("_id", topic.get_id());
         topicJson.put("numberOfReplies", null);
-        topicJson.put("replies", topicReplies);
+        topicJson.put("replies", replyBuilder.jsonFromList(topicReplies));
         topicJson.put("title", topic.getTitle());
         topicJson.put("updatedAt", topic.getUpdatedAt());
         topicJson.put("user", userBuilder.generateJson(topic.getUser()));

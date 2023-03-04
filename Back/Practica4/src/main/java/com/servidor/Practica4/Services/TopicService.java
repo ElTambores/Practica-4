@@ -1,9 +1,7 @@
 package com.servidor.Practica4.Services;
 
-import com.servidor.Practica4.Builders.ReplyBuilder;
 import com.servidor.Practica4.Builders.TopicBuilder;
 import com.servidor.Practica4.Builders.UserBuilder;
-import com.servidor.Practica4.Forms.ReplyForm;
 import com.servidor.Practica4.Forms.TopicForm;
 import com.servidor.Practica4.Models.Category;
 import com.servidor.Practica4.Models.Reply;
@@ -25,7 +23,6 @@ public class TopicService {
     ReplyRepo replyRepo;
 
     TopicBuilder topicBuilder = new TopicBuilder();
-    ReplyBuilder replyBuilder = new ReplyBuilder();
     UserBuilder userBuilder = new UserBuilder();
 
     public TopicService(TopicRepo topicRepo, CategoryRepo categoryRepo, ReplyRepo replyRepo) {
@@ -56,15 +53,6 @@ public class TopicService {
         Topic topic = getTopicById(topicId);
         List<Reply> replies = replyRepo.findByTopicEquals(topic);
         return topicBuilder.createJson(topic, replies);
-    }
-
-    public Map<String, Object> postReply(ReplyForm replyForm, long topicId, Object userInfo) {
-        Topic topic = getTopicById(topicId);
-        User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
-        Reply reply = replyRepo.save(replyBuilder.fromForm(replyForm, topic, user));
-
-        return replyBuilder.getJson(reply);
-
     }
 
     private Topic getTopicById(long topicId) {

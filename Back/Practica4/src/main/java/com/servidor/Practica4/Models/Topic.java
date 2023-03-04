@@ -1,6 +1,8 @@
 package com.servidor.Practica4.Models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.Set;
@@ -23,12 +25,13 @@ public class Topic {
 
     int __V;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user")
     User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Category category;
 
     public Long get_id() {

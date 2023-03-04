@@ -5,11 +5,11 @@ import com.servidor.Practica4.Models.Reply;
 import com.servidor.Practica4.Models.Topic;
 import com.servidor.Practica4.Models.User;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ReplyBuilder {
+    UserBuilder userBuilder = new UserBuilder();
+
     public Reply fromForm(ReplyForm replyForm, Topic topic, User creator) {
         Reply reply = new Reply();
         Date creationDate = new Date(System.currentTimeMillis());
@@ -31,10 +31,18 @@ public class ReplyBuilder {
         json.put("createdAt", reply.getCreatedAt());
         json.put("topic", reply.getTopic().get_id());
         json.put("updatedAt", reply.getUpdatedAt());
-        json.put("user", reply.getUser());
+        json.put("user", userBuilder.generateJson(reply.getUser()));
         json.put("__v", reply.get__v());
         json.put("_id", reply.get_id());
 
         return json;
+    }
+
+    public List<Map<String, Object>> jsonFromList(List<Reply> replies) {
+        List<Map<String, Object>> replyList = new ArrayList<>();
+        for (Reply reply : replies) {
+            replyList.add(getJson(reply));
+        }
+        return replyList;
     }
 }

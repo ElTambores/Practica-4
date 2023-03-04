@@ -1,6 +1,8 @@
 package com.servidor.Practica4.Models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -23,6 +25,7 @@ public class Reply {
     User user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "topic")
     Topic topic;
 

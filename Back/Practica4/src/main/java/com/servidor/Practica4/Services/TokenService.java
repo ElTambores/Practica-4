@@ -29,10 +29,7 @@ public class TokenService {
         this.userRepo = userRepo;
     }
 
-    public String createUserToken(String userEmail) {
-        List<User> users = userRepo.findByEmailEquals(userEmail);
-        if (users.size() == 0) return null;
-        User user = users.get(0);
+    public String createUserToken(User user) {
         PermissionsUtils permissionsUtils = new PermissionsUtils();
         Map<String, Object> permissions = new HashMap<>();
         permissions.put("root", permissionsUtils.getPermissionsByRole((user.getRole())));
@@ -40,7 +37,7 @@ public class TokenService {
         return JWT.create()
                 .withClaim("role", user.getRole())
                 .withClaim("_id", user.getId())
-                .withClaim("email", userEmail)
+                .withClaim("email", user.getEmail())
                 .withClaim("name", user.getName())
                 .withClaim("__v", user.get__v())
                 .withClaim("avatarUrl", user.getAvatarUrl())
@@ -51,6 +48,7 @@ public class TokenService {
     }
 
     public Map<String, Object> getUserFromToken(String token) {
+        if (token.equals("null")) return null;
         UserBuilder userBuilder = new UserBuilder();
         Map<String, Claim> tokenInfo = JWT.require(Algorithm.HMAC512(tokenSecret.getBytes())).build().verify(token).getClaims();
         long iat = JWT.require(Algorithm.HMAC512(tokenSecret.getBytes())).build().verify(token).getExpiresAt().getTime();

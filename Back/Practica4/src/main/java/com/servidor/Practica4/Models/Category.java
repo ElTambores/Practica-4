@@ -20,7 +20,6 @@ public class Category {
 
     String description;
 
-    //A futuro debería ser una lista de usuarios resultando en una tabla pivote (ver ejemplo en portatil)
     String moderators;
 
     public Long get_id() {
