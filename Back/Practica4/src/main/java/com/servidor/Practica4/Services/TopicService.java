@@ -34,7 +34,7 @@ public class TopicService {
         this.replyRepo = replyRepo;
     }
 
-    public List<Map<String,Object>> getAllTopics(String slug) {
+    public List<Map<String, Object>> getAllTopics(String slug) {
         Category category = getCategoryFromSlug(slug);
         List<Topic> topics = topicRepo.findByCategoryEquals(category);
         return topicBuilder.jsonFromList(topics);
@@ -54,14 +54,16 @@ public class TopicService {
 
     public Map<String, Object> getTopic(Long topicId) {
         Topic topic = getTopicById(topicId);
-        return topicBuilder.createJson(topic);
+        List<Reply> replies = replyRepo.findByTopicEquals(topic);
+        return topicBuilder.createJson(topic, replies);
     }
 
     public Map<String, Object> postReply(ReplyForm replyForm, long topicId, Object userInfo) {
         Topic topic = getTopicById(topicId);
-        Reply reply = replyRepo.save(replyBuilder.fromForm(replyForm, topic));
+        User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
+        Reply reply = replyRepo.save(replyBuilder.fromForm(replyForm, topic, user));
 
-        return replyBuilder.getJson(reply, userBuilder.fromUserInfo((Map<String, Object>) userInfo));
+        return replyBuilder.getJson(reply);
 
     }
 

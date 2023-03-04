@@ -72,7 +72,7 @@ public class TopicBuilder {
         return topicJson;
     }
 
-    public Map<String, Object> createJson(Topic topic) {
+    public Map<String, Object> createJson(Topic topic, List<Reply> topicReplies) {
         Map<String, Object> topicJson = new HashMap<>();
 
         topicJson.put("category", topic.getCategory());
@@ -80,8 +80,8 @@ public class TopicBuilder {
         topicJson.put("createdAt", topic.getCreatedAt());
         topicJson.put("id", topic.get_id());
         topicJson.put("_id", topic.get_id());
-        topicJson.put("numberOfReplies", 0);
-        topicJson.put("replies", null);
+        topicJson.put("numberOfReplies", null);
+        topicJson.put("replies", topicReplies);
         topicJson.put("title", topic.getTitle());
         topicJson.put("updatedAt", topic.getUpdatedAt());
         topicJson.put("user", userBuilder.generateJson(topic.getUser()));

@@ -22,12 +22,9 @@ public class Reply {
     @JoinColumn(name = "user")
     User user;
 
-    @ManyToOne(targetEntity = Topic.class ,fetch = FetchType.LAZY)
-    @JoinColumn(name = "topic", insertable = false, updatable = false)
-    Topic topicFull;
-
-    @Column (name = "topic")
-    Long topic;
+    @ManyToOne
+    @JoinColumn(name = "topic")
+    Topic topic;
 
     public Long get_id() {
         return _id;
@@ -77,20 +74,11 @@ public class Reply {
         this.user = user;
     }
 
-    public Topic getTopicFull() {
-        return topicFull;
-    }
-
-    public void setTopicFull(Topic topicFull) {
-        setTopic(topicFull.get_id());
-        this.topicFull = topicFull;
-    }
-
-    public Long getTopic() {
+    public Topic getTopic() {
         return topic;
     }
 
-    public void setTopic(Long topic) {
+    public void setTopic(Topic topic) {
         this.topic = topic;
     }
 }

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReplyRepo extends JpaRepository<Reply, Long> {
-    List<Reply> findByTopicFullEquals(Topic topic);
+    List<Reply> findByTopicEquals(Topic topic);
 }
