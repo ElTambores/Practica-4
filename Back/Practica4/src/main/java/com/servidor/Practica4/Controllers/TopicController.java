@@ -21,7 +21,7 @@ public class TopicController {
 
     @CrossOrigin
     @GetMapping("categories/{slug}/topics")
-    public List<Topic> getTopics(@PathVariable String slug, HttpServletResponse response) {
+    public List<Map<String,Object>> getTopics(@PathVariable String slug, HttpServletResponse response) {
         return topicService.getAllTopics(slug);
     }
 
@@ -34,8 +34,8 @@ public class TopicController {
 
     @CrossOrigin
     @GetMapping("/topics/{topicId}")
-    public Map<String, Object> getTopic(@PathVariable long topicId, HttpServletRequest request) {
-        return topicService.getTopic(topicId, request.getAttribute("user"));
+    public Map<String, Object> getTopic(@PathVariable long topicId) {
+        return topicService.getTopic(topicId);
     }
 
     @CrossOrigin

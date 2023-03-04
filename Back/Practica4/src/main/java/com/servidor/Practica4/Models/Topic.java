@@ -23,14 +23,9 @@ public class Topic {
 
     int __V;
 
-    @OneToMany(mappedBy = "topic")
-    Set<Reply> replies;
-
     @ManyToOne
     @JoinColumn(name = "user")
     User user;
-
-    //Set<Reply> replies; añadir cuando se implementen las replies
 
     @ManyToOne
     @JoinColumn(name = "category")
@@ -98,14 +93,6 @@ public class Topic {
 
     public void set__V(int __V) {
         this.__V = __V;
-    }
-
-    public Set<Reply> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(Set<Reply> replies) {
-        this.replies = replies;
     }
 
     public User getUser() {

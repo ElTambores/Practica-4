@@ -24,8 +24,9 @@ public class UserBuilder {
         return user;
     }
 
-    public Map<String, Object> generateJson(User user) {
+    public Map<String, Object> generateJsonFullInfo(User user) {
         Map<String, Object> userInfo = getUserInfo(user);
+        userInfo.put("iat", user.getIat());
         Map<String, Object> permissions = getPermissions(user.getRole());
         userInfo.put("permissions", permissions);
 
@@ -55,21 +56,22 @@ public class UserBuilder {
         return root;
     }
 
-    public Map<String, Object> fromToken(Map<String, Claim> tokenInfo) {
+    public Map<String, Object> fromToken(Map<String, Claim> tokenInfo, long iat) {
         User user = new User();
-        String role = (tokenInfo.get("role")).toString();
-        String email = tokenInfo.get("email").toString();
-        String name = tokenInfo.get("name").toString();
-        String avatarUrl = tokenInfo.get("avatarUrl").toString();
+        String role = (tokenInfo.get("role")).asString();
+        String email = tokenInfo.get("email").asString();
+        String name = tokenInfo.get("name").asString();
+        String avatarUrl = tokenInfo.get("avatarUrl").asString();
 
-        user.setRole(role.substring(1, role.length() - 1));
+        user.setRole(role);
         user.setId(Long.parseLong(tokenInfo.get("_id").toString()));
-        user.setEmail(email.substring(1, email.length() - 1));
-        user.setName(name.substring(1, name.length() - 1));
+        user.setEmail(email);
+        user.setName(name);
         user.set__v("0");
         user.setAvatarUrl(avatarUrl);
+        user.setIat(iat);
 
-        return generateJson(user);
+        return generateJsonFullInfo(user);
     }
 
     public User fromUserInfo(Map<String, Object> tokenInfo) {
@@ -88,5 +90,9 @@ public class UserBuilder {
         user.setAvatarUrl(avatarUrl);
 
         return user;
+    }
+
+    public Object generateJson(User user) {
+        return getUserInfo(user);
     }
 }

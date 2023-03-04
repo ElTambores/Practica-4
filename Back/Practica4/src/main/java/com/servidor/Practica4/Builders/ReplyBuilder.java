@@ -17,7 +17,7 @@ public class ReplyBuilder {
         reply.setContent(replyForm.getContent());
         reply.setCreatedAt(creationDate);
         reply.setUpdatedAt(creationDate);
-        reply.setTopic(topic);
+        reply.setTopicFull(topic);
         reply.set__v("0");
 
         return reply;
@@ -31,7 +31,7 @@ public class ReplyBuilder {
         json.put("updatedAt", reply.getUpdatedAt());
         json.put("_id", reply.get_id());
         json.put("__v", reply.get__v());
-        json.put("topic", reply.getTopic().get_id());
+        json.put("topic", reply.getTopicFull().get_id());
         json.put("user", user);
 
         return json;

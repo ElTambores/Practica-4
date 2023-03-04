@@ -37,7 +37,6 @@ public class TokenService {
         Map<String, Object> permissions = new HashMap<>();
         permissions.put("root", permissionsUtils.getPermissionsByRole((user.getRole())));
         Date expDate = new Date(System.currentTimeMillis() + expTokenTime);
-
         return JWT.create()
                 .withClaim("role", user.getRole())
                 .withClaim("_id", user.getId())
@@ -47,14 +46,14 @@ public class TokenService {
                 .withClaim("avatarUrl", user.getAvatarUrl())
                 .withClaim("id", user.getId())
                 .withClaim("permissions", permissions)
-//                .withClaim("iat", expDate)
                 .withExpiresAt(expDate)
                 .sign(Algorithm.HMAC512(tokenSecret.getBytes()));
     }
 
     public Map<String, Object> getUserFromToken(String token) {
         UserBuilder userBuilder = new UserBuilder();
-        Map<String, Claim> tokenInfo = (JWT.require(Algorithm.HMAC512(tokenSecret.getBytes())).build().verify(token).getClaims());
-        return userBuilder.fromToken(tokenInfo);
+        Map<String, Claim> tokenInfo = JWT.require(Algorithm.HMAC512(tokenSecret.getBytes())).build().verify(token).getClaims();
+        long iat = JWT.require(Algorithm.HMAC512(tokenSecret.getBytes())).build().verify(token).getExpiresAt().getTime();
+        return userBuilder.fromToken(tokenInfo, iat);
     }
 }

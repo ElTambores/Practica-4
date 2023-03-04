@@ -22,6 +22,8 @@ public class User {
 
     String __v;
 
+    @Transient
+    long iat;
 
     public Long getId() {
         return id;
@@ -79,4 +81,11 @@ public class User {
         this.__v = __v;
     }
 
+    public long getIat() {
+        return iat;
+    }
+
+    public void setIat(long iat) {
+        this.iat = iat;
+    }
 }

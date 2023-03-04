@@ -1,6 +1,9 @@
 package com.servidor.Practica4.Services;
 
 import com.servidor.Practica4.Builders.UserBuilder;
+import com.servidor.Practica4.Exceptions.EmailAlreadyExistsException;
+import com.servidor.Practica4.Exceptions.EmailNotRegisteredException;
+import com.servidor.Practica4.Exceptions.WrongPasswordException;
 import com.servidor.Practica4.Forms.SignUpForm;
 import com.servidor.Practica4.Models.User;
 import com.servidor.Practica4.Repos.UserRepo;
@@ -21,22 +24,21 @@ public class UserService {
     }
 
     public String createUser(SignUpForm signUpForm) throws NoSuchAlgorithmException {
-        User user = userBuilder.fromForm(signUpForm);
-        List<User> users = userRepo.findByEmailEquals(user.getEmail());
+        List<User> users = userRepo.findByEmailEquals(signUpForm.getEmail());
         if (users.size() == 0) {
-            userRepo.save(user);
+            userRepo.save(userBuilder.fromForm(signUpForm));
             return "done";
         }
-        return "This email is already registered";
+        throw new EmailAlreadyExistsException();
     }
 
     public String login(String email, String password) throws NoSuchAlgorithmException {
         List<User> users = userRepo.findByEmailEquals(email);
         HashUtils hashUtils = new HashUtils();
         String hashPass = hashUtils.getHashSHA256(password);
-        if (users.size() == 0) return "This email is not registered";
+        if (users.size() == 0) throw new EmailNotRegisteredException();
         if (users.get(0).getPassword().equals(hashPass)) return "done";
-        return "Wrong password";
+        else throw new WrongPasswordException();
     }
 
     public User getUserByEmail(String email) {
@@ -45,6 +47,6 @@ public class UserService {
     }
 
     public Map<String, Object> getUserJson1(String email) {
-        return userBuilder.generateJson(getUserByEmail(email));
+        return userBuilder.generateJsonFullInfo(getUserByEmail(email));
     }
 }

@@ -1,5 +1,8 @@
 package com.servidor.Practica4.Controllers;
 
+import com.servidor.Practica4.Exceptions.EmailAlreadyExistsException;
+import com.servidor.Practica4.Exceptions.EmailNotRegisteredException;
+import com.servidor.Practica4.Exceptions.WrongPasswordException;
 import com.servidor.Practica4.Forms.SignUpForm;
 import com.servidor.Practica4.Services.TokenService;
 import com.servidor.Practica4.Services.UserService;
@@ -25,10 +28,13 @@ public class UserController {
     @PostMapping("/register")
     public Map<String, Object> SignUp(@RequestBody SignUpForm signUpForm, HttpServletResponse response) throws NoSuchAlgorithmException {
         Map<String, Object> result = new HashMap<>();
-
-        String message = userService.createUser(signUpForm);
-
-        if (!message.equals("done")) response.setStatus(400);
+        String message = "";
+        try {
+            message = userService.createUser(signUpForm);
+        } catch (EmailAlreadyExistsException e) {
+            message = "This email is already registered";
+            response.setStatus(400);
+        }
 
         result.put("message", message);
         return result;
@@ -40,16 +46,18 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         String email = signUpForm.getEmail();
         String password = signUpForm.getPassword();
+        String message = "";
 
-        String message = userService.login(email, password);
-
-        if (!message.equals("done")) response.setStatus(400);
-        else {
-            Map<String, Object> userMap = userService.getUserJson1(email);
-            String token = tokenService.createUserToken(email);
-
-            result.put("token", token);
-            result.put("user", userMap);
+        try {
+            message = userService.login(email, password);
+            result.put("token", tokenService.createUserToken(email));
+            result.put("user", userService.getUserJson1(email));
+        } catch (EmailNotRegisteredException e) {
+            response.setStatus(400);
+            message = "This email is not registered";
+        } catch (WrongPasswordException e) {
+            response.setStatus(400);
+            message = "Wrong password";
         }
         result.put("message", message);
         return result;
@@ -59,6 +67,5 @@ public class UserController {
     @GetMapping("/getprofile")
     public Object getProfile(HttpServletRequest request) {
         return request.getAttribute("user");
-
     }
 }

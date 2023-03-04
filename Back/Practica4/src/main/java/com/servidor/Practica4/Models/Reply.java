@@ -19,8 +19,15 @@ public class Reply {
     String __v;
 
     @ManyToOne
-    @JoinColumn(name = "topic", nullable = false)
-    Topic topic;
+    @JoinColumn(name = "user")
+    User user;
+
+    @ManyToOne(targetEntity = Topic.class ,fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic", insertable = false, updatable = false)
+    Topic topicFull;
+
+    @Column (name = "topic")
+    Long topic;
 
     public Long get_id() {
         return _id;
@@ -62,11 +69,28 @@ public class Reply {
         this.__v = __v;
     }
 
-    public Topic getTopic() {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Topic getTopicFull() {
+        return topicFull;
+    }
+
+    public void setTopicFull(Topic topicFull) {
+        setTopic(topicFull.get_id());
+        this.topicFull = topicFull;
+    }
+
+    public Long getTopic() {
         return topic;
     }
 
-    public void setTopic(Topic topic) {
+    public void setTopic(Long topic) {
         this.topic = topic;
     }
 }

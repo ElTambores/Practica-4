@@ -14,7 +14,6 @@ import com.servidor.Practica4.Repos.ReplyRepo;
 import com.servidor.Practica4.Repos.TopicRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +26,7 @@ public class TopicService {
 
     TopicBuilder topicBuilder = new TopicBuilder();
     ReplyBuilder replyBuilder = new ReplyBuilder();
+    UserBuilder userBuilder = new UserBuilder();
 
     public TopicService(TopicRepo topicRepo, CategoryRepo categoryRepo, ReplyRepo replyRepo) {
         this.topicRepo = topicRepo;
@@ -34,24 +34,16 @@ public class TopicService {
         this.replyRepo = replyRepo;
     }
 
-    public List<Topic> getAllTopics(String slug) {
+    public List<Map<String,Object>> getAllTopics(String slug) {
         Category category = getCategoryFromSlug(slug);
-        return topicRepo.findByCategoryEquals(category);
+        List<Topic> topics = topicRepo.findByCategoryEquals(category);
+        return topicBuilder.jsonFromList(topics);
     }
 
     public Topic createTopic(TopicForm topicForm, Object userInfo) {
-        User user = extractUserFromUserInfo(userInfo);
+        User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
         Category topicCategory = getCategoryFromSlug(topicForm.getCategory());
-
-        Topic topic = topicRepo.save(topicBuilder.fromForm(topicForm, topicCategory, user));
-
-        return topic;
-    }
-
-    private User extractUserFromUserInfo(Object userInfo) {
-        Map<String, Object> userMap = (Map<String, Object>) userInfo;
-        UserBuilder userBuilder = new UserBuilder();
-        return userBuilder.fromUserInfo(userMap);
+        return topicRepo.save(topicBuilder.fromForm(topicForm, topicCategory, user));
     }
 
     private Category getCategoryFromSlug(String slug) {
@@ -60,18 +52,16 @@ public class TopicService {
         return categories.get(0);
     }
 
-    public Map<String, Object> getTopic(Long topicId, Object userInfo) {
-        User user = extractUserFromUserInfo(userInfo);
+    public Map<String, Object> getTopic(Long topicId) {
         Topic topic = getTopicById(topicId);
-
-        return topicBuilder.getJson(topic, user);
+        return topicBuilder.createJson(topic);
     }
 
     public Map<String, Object> postReply(ReplyForm replyForm, long topicId, Object userInfo) {
         Topic topic = getTopicById(topicId);
         Reply reply = replyRepo.save(replyBuilder.fromForm(replyForm, topic));
 
-        return replyBuilder.getJson(reply, extractUserFromUserInfo(userInfo));
+        return replyBuilder.getJson(reply, userBuilder.fromUserInfo((Map<String, Object>) userInfo));
 
     }
 
