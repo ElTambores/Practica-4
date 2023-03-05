@@ -11,6 +11,8 @@ public class SignUpForm {
 
     String role;
 
+    String moderatedCategory;
+
     public String getName() {
         return name;
     }
@@ -43,4 +45,11 @@ public class SignUpForm {
         this.role = role;
     }
 
+    public String getModeratedCategory() {
+        return moderatedCategory;
+    }
+
+    public void setModeratedCategory(String moderatedCategory) {
+        this.moderatedCategory = moderatedCategory;
+    }
 }

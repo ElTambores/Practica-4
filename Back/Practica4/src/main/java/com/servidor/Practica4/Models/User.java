@@ -2,8 +2,6 @@ package com.servidor.Practica4.Models;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 public class User {
     @Id

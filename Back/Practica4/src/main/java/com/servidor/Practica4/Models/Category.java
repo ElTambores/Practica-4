@@ -75,5 +75,4 @@ public class Category {
     public void setModerator(String moderator) {
         this.moderator = moderator;
     }
-
 }
