@@ -18,7 +18,7 @@ public class TopicController {
         this.topicService = topicService;
     }
 
-    @GetMapping("categories/{slug}/topics")
+    @GetMapping("/categories/{slug}/topics")
     public List<Map<String, Object>> getTopics(@PathVariable String slug) {
         return topicService.getAllTopics(slug);
     }
@@ -39,7 +39,7 @@ public class TopicController {
     }
 
     @DeleteMapping("/topics/{topicId}")
-    public Object deleteReply(@PathVariable long topicId, HttpServletRequest request) {
+    public Boolean deleteReply(@PathVariable long topicId, HttpServletRequest request) {
         return topicService.deleteTopic(topicId, request.getAttribute("user"));
     }
 }

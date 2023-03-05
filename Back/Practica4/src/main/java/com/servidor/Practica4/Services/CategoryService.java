@@ -62,7 +62,7 @@ public class CategoryService {
 
     public Map<String, Object> updateCategory(String slug, CategoryForm categoryForm, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
-        if (!user.getRole().equals("admin")) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (user == null || !user.getRole().equals("admin")) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         try {
             categoryRepo.update(slug, categoryForm.getTitle(), categoryForm.getDescription());
             List<Category> categories = categoryRepo.findBySlugEquals(slug);
@@ -75,7 +75,7 @@ public class CategoryService {
 
     public Boolean deleteCategory(String slug, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
-        if (!user.getRole().equals("admin")) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (user == null || !user.getRole().equals("admin")) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         long deletedRows = categoryRepo.deleteBySlug(slug);
 
         return deletedRows == 1;

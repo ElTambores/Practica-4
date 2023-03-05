@@ -22,13 +22,13 @@ public class ReplyService {
     ReplyRepo replyRepo;
     TopicRepo topicRepo;
 
+    UserBuilder userBuilder = new UserBuilder();
+    ReplyBuilder replyBuilder = new ReplyBuilder();
+
     public ReplyService(ReplyRepo replyRepo, TopicRepo topicRepo) {
         this.replyRepo = replyRepo;
         this.topicRepo = topicRepo;
     }
-
-    UserBuilder userBuilder = new UserBuilder();
-    ReplyBuilder replyBuilder = new ReplyBuilder();
 
     public Map<String, Object> postReply(ReplyForm replyForm, long topicId, Object userInfo) {
         Topic topic = getTopicById(topicId);
@@ -46,7 +46,7 @@ public class ReplyService {
     public Map<String, Object> updateReply(ReplyForm replyForm, long replyId, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
         Reply reply = replyRepo.findById(replyId).orElseGet(null);
-
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         if (user.getRole().equals("admin") || user.getId().equals(reply.getUser().getId())) {
             try {
                 Date updateDate = new Date(System.currentTimeMillis());
@@ -64,6 +64,7 @@ public class ReplyService {
     public Boolean deleteReply(long replyId, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
         Reply reply = replyRepo.findById(replyId).orElseGet(null);
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         if (user.getRole().equals("admin") || user.getId().equals(reply.getUser().getId())) {
             try {
                 replyRepo.deleteById(replyId);

@@ -1,10 +1,12 @@
 package com.servidor.Practica4.Forms;
 
 
-public class SignUpForm {
+import jakarta.validation.constraints.Email;
 
+public class SignUpForm {
     String name;
 
+    @Email
     String email;
 
     String password;

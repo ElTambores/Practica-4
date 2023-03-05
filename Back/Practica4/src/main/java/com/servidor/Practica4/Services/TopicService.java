@@ -77,7 +77,7 @@ public class TopicService {
     public Map<String, Object> updateTopic(TopicForm topicForm, long topicId, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
         Topic topic = topicRepo.findById(topicId).orElseGet(null);
-
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         if (user.getRole().equals("admin") || user.getId().equals(topic.getUser().getId())) {
             try {
                 Category category = getCategoryFromSlug(topicForm.getCategory());
@@ -97,6 +97,7 @@ public class TopicService {
     public Boolean deleteTopic(long topicId, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
         Topic topic = topicRepo.findById(topicId).orElseGet(null);
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         if (user.getRole().equals("admin") || user.getId().equals(topic.getUser().getId())) {
             try {
                 topicRepo.deleteById(topicId);
