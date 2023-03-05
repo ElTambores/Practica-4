@@ -15,7 +15,7 @@ public class CategoryBuilder {
         category.set__v(0);
         category.setColor(getRandomColor());
         category.setSlug(slut);
-        category.setModerators("");
+        category.setModerator("");
 
         return category;
     }

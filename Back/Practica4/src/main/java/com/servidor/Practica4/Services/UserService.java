@@ -3,6 +3,7 @@ package com.servidor.Practica4.Services;
 import com.servidor.Practica4.Builders.UserBuilder;
 import com.servidor.Practica4.Exceptions.*;
 import com.servidor.Practica4.Forms.ChangePasswordForm;
+import com.servidor.Practica4.Forms.LoginForm;
 import com.servidor.Practica4.Forms.SignUpForm;
 import com.servidor.Practica4.Forms.UpdateUserForm;
 import com.servidor.Practica4.Models.User;
@@ -33,17 +34,12 @@ public class UserService {
         throw new EmailAlreadyExistsException();
     }
 
-    public User login(String email, String password) throws NoSuchAlgorithmException {
-        List<User> users = userRepo.findByEmailEquals(email);
-        String hashPass = hashUtils.getHashSHA256(password);
+    public User login(LoginForm loginForm) throws NoSuchAlgorithmException {
+        List<User> users = userRepo.findByEmailEquals(loginForm.getEmail());
+        String hashPass = hashUtils.getHashSHA256(loginForm.getPassword());
         if (users.size() == 0) throw new EmailNotRegisteredException();
         if (users.get(0).getPassword().equals(hashPass)) return users.get(0);
         else throw new WrongPasswordException();
-    }
-
-    public User getUserByEmail(String email) {
-        List<User> users = userRepo.findByEmailEquals(email);
-        return users.size() == 0 ? null : users.get(0);
     }
 
     public Map<String, Object> getUserJson(User user) {

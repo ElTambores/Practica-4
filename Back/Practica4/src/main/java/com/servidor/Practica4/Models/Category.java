@@ -2,8 +2,6 @@ package com.servidor.Practica4.Models;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 @Entity
 public class Category {
     @Id
@@ -20,7 +18,7 @@ public class Category {
 
     String description;
 
-    String moderators;
+    String moderator;
 
     public Long get_id() {
         return _id;
@@ -70,12 +68,12 @@ public class Category {
         this.description = description;
     }
 
-    public String getModerators() {
-        return moderators;
+    public String getModerator() {
+        return moderator;
     }
 
-    public void setModerators(String moderators) {
-        this.moderators = moderators;
+    public void setModerator(String moderator) {
+        this.moderator = moderator;
     }
 
 }

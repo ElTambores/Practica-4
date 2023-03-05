@@ -5,6 +5,9 @@ import com.servidor.Practica4.Models.Category;
 import com.servidor.Practica4.Models.Reply;
 import com.servidor.Practica4.Models.Topic;
 import com.servidor.Practica4.Models.User;
+import com.servidor.Practica4.Repos.TopicRepo;
+import com.servidor.Practica4.Services.ReplyService;
+import com.servidor.Practica4.Services.TopicService;
 
 import java.util.*;
 
@@ -32,12 +35,12 @@ public class TopicBuilder {
     public List<Map<String, Object>> jsonFromList(List<Topic> topics) {
         List<Map<String, Object>> topicList = new ArrayList<>();
         for (Topic topic : topics) {
-            topicList.add(createJsonForList(topic));
+            topicList.add(createListJson(topic));
         }
         return topicList;
     }
 
-    private Map<String, Object> createJsonForList(Topic topic) {
+    private Map<String, Object> createListJson(Topic topic) {
         Map<String, Object> topicJson = new HashMap<>();
 
         topicJson.put("category", topic.getCategory().get_id());
@@ -45,7 +48,7 @@ public class TopicBuilder {
         topicJson.put("createdAt", topic.getCreatedAt());
         topicJson.put("id", topic.get_id());
         topicJson.put("_id", topic.get_id());
-        topicJson.put("numberOfReplies", 0);
+        topicJson.put("numberOfReplies", topic.getReplies());
         topicJson.put("replies", null);
         topicJson.put("title", topic.getTitle());
         topicJson.put("updatedAt", topic.getUpdatedAt());
@@ -64,7 +67,7 @@ public class TopicBuilder {
         topicJson.put("createdAt", topic.getCreatedAt());
         topicJson.put("id", topic.get_id());
         topicJson.put("_id", topic.get_id());
-        topicJson.put("numberOfReplies", null);
+        topicJson.put("numberOfReplies", 0);
         topicJson.put("replies", replyBuilder.jsonFromList(topicReplies));
         topicJson.put("title", topic.getTitle());
         topicJson.put("updatedAt", topic.getUpdatedAt());

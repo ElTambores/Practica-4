@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ReplyRepo extends JpaRepository<Reply, Long> {
@@ -14,6 +15,7 @@ public interface ReplyRepo extends JpaRepository<Reply, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Reply r SET r.content=:newContent WHERE r._id=:replyId")
-    void update(long replyId, String newContent);
+    @Query("UPDATE Reply r SET r.content=:newContent, r.updatedAt=:updateDate WHERE r._id=:replyId")
+    void update(long replyId, String newContent, Date updateDate);
+
 }

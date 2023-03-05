@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-@Transactional
+
 public interface CategoryRepo extends JpaRepository<Category, Long> {
     List<Category> findBySlugEquals(String slut);
 

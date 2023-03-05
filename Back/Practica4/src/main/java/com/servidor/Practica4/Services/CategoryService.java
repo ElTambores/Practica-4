@@ -73,7 +73,7 @@ public class CategoryService {
         }
     }
 
-    public Object deleteCategory(String slug, Object userInfo) {
+    public Boolean deleteCategory(String slug, Object userInfo) {
         User user = userBuilder.fromUserInfo((Map<String, Object>) userInfo);
         if (!user.getRole().equals("admin")) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         long deletedRows = categoryRepo.deleteBySlug(slug);

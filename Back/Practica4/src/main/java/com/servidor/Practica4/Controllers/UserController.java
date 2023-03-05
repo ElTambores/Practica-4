@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class UserController {
     UserService userService;
@@ -26,7 +27,6 @@ public class UserController {
         this.tokenService = tokenService;
     }
 
-    @CrossOrigin
     @PostMapping("/register")
     public Map<String, Object> SignUp(@RequestBody SignUpForm signUpForm, HttpServletResponse response) throws NoSuchAlgorithmException {
         Map<String, Object> result = new HashMap<>();
@@ -37,21 +37,16 @@ public class UserController {
             message = "This email is already registered";
             response.setStatus(400);
         }
-
         result.put("message", message);
         return result;
     }
 
-    @CrossOrigin
     @PostMapping("/login")
     public Map<String, Object> Login(@RequestBody LoginForm loginForm, HttpServletResponse response) throws NoSuchAlgorithmException {
         Map<String, Object> result = new HashMap<>();
-        String email = loginForm.getEmail();
-        String password = loginForm.getPassword();
         String message = "";
-
         try {
-            User user = userService.login(email, password);
+            User user = userService.login(loginForm);
             message = "done";
             result.put("token", tokenService.createUserToken(user));
             result.put("user", userService.getUserJson(user));
@@ -66,50 +61,45 @@ public class UserController {
         return result;
     }
 
-    @CrossOrigin
     @GetMapping("/getprofile")
     public Object getProfile(HttpServletRequest request) {
         return request.getAttribute("user");
     }
 
-    @CrossOrigin
     @PutMapping("/profile")
-    public Map<String, Object> updateNameAndEmail(@RequestBody UpdateUserForm updateUserForm, HttpServletRequest request, HttpServletResponse response){
+    public Map<String, Object> updateNameAndEmail(@RequestBody UpdateUserForm updateUserForm, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> result = new HashMap<>();
         try {
             User updatedUser = userService.updateUser(updateUserForm, request.getAttribute("user"));
             result.put("token", tokenService.createUserToken(updatedUser));
             result.put("user", userService.getUserJson(updatedUser));
-        }catch (EmailAlreadyExistsException e){
+        } catch (EmailAlreadyExistsException e) {
             response.setStatus(400);
             result.put("message", "Email already exists.");
-        }catch (ErrorUpdatingException e){
+        } catch (ErrorUpdatingException e) {
             response.setStatus(400);
             result.put("message", "Error updating user.");
         }
         return result;
     }
 
-    @CrossOrigin
     @PutMapping("/profile/password")
     public Object updatePassword(@RequestBody ChangePasswordForm changePasswordForm, HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException {
         Map<String, Object> result = new HashMap<>();
         try {
             userService.updateUserPassword(changePasswordForm, request.getAttribute("user"));
             return true;
-        }catch (WrongPasswordException e){
+        } catch (WrongPasswordException e) {
             response.setStatus(400);
             result.put("message", "Your current password is wrong!");
-        }
-        catch (SamePasswordException e){
+        } catch (SamePasswordException e) {
             response.setStatus(400);
             result.put("message", "Your new password cannot be the same as the old password");
-        }catch (ErrorUpdatingException e){
+        } catch (ErrorUpdatingException e) {
             response.setStatus(400);
             result.put("message", "Error updating user.");
         }
         return result;
     }
-
 
 }

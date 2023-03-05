@@ -5,7 +5,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 public class Topic {
@@ -25,14 +24,17 @@ public class Topic {
 
     int __V;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "user")
     User user;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "category")
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "category")
     Category category;
+
+    @Transient
+    int replies;
 
     public Long get_id() {
         return _id;
@@ -56,14 +58,6 @@ public class Topic {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public Date getCreatedAt() {
@@ -104,5 +98,21 @@ public class Topic {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public int getReplies() {
+        return replies;
+    }
+
+    public void setReplies(int replies) {
+        this.replies = replies;
     }
 }
